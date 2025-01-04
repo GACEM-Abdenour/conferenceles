@@ -11,7 +11,6 @@ public class DetailsSoumission {
     private String dateDeModification;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "soumission_id")
     private Soumission soumission;
 
     public DetailsSoumission(String dateDeSoumission, String dateDeModification) {

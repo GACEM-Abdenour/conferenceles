@@ -1,5 +1,6 @@
 package tp.isilB.conferenceles.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -22,7 +23,6 @@ public class Evaluation {
         this.etat = etat;
         this.soumission = soumission;
     }
-
     public Evaluation() {}
 
     public void setNote(int note) { this.note = note; }

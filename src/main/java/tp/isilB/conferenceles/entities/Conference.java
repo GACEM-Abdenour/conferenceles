@@ -1,5 +1,7 @@
 package tp.isilB.conferenceles.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.Collection;
@@ -21,6 +23,8 @@ public class Conference {
     private Set<Soumission> soumissions = new HashSet<>();
     @ManyToOne
     private Utilisateur utilisateur;
+
+
 
     public Conference() {}
     public Conference(String titre, String dateDebut, String dateFin, String theme, String etat) {
