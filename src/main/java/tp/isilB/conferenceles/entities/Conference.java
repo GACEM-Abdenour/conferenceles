@@ -1,6 +1,7 @@
 package tp.isilB.conferenceles.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
@@ -19,9 +20,15 @@ public class Conference {
     private String dateFin;
     private String theme;
     private String etat;  // ouverte aux soummision, fermee, en evaluation etc..
+
+
     @OneToMany(mappedBy = "conference", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Set<Soumission> soumissions = new HashSet<>();
+
+
     @ManyToOne
+    @JsonBackReference
     private Utilisateur utilisateur;
 
 

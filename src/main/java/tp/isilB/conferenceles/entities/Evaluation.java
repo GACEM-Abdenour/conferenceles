@@ -12,10 +12,16 @@ public class Evaluation {
     private int note; // 1-10
     private String commentaires;
     private String etat;
+
     @ManyToOne
-    private Soumission soumission;
-    @ManyToOne
+    @JsonBackReference
     private Utilisateur utilisateur;
+
+    @ManyToOne
+    @JsonBackReference
+    private Soumission soumission;
+
+
 
     public Evaluation(int note, String commentaires, String etat,Soumission soumission) {
         this.note = note;

@@ -20,15 +20,20 @@ public class Soumission {
     private String nom;
     private String description;
 
-    @ManyToOne
-    private Utilisateur utilisateur;
-    @OneToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name = "details_id")
-    private DetailsSoumission detailsSoumission;
     @OneToMany(mappedBy = "soumission", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Collection<Evaluation> evaluations = new HashSet<>();
+
     @ManyToOne
+    @JsonBackReference
+    private Utilisateur utilisateur;
+
+    @ManyToOne
+    @JsonBackReference
     private Conference conference;
+
+
+
 
     public Soumission(String nom, String description, Utilisateur utilisateur) {
         super();
@@ -73,7 +78,6 @@ public class Soumission {
     }
     public Conference getConference() { return conference; }
 
-    public void setDetailsSoumission(DetailsSoumission detailsSoumission) {
-        this.detailsSoumission = detailsSoumission;
-    }
+
+
 }

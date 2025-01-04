@@ -1,6 +1,6 @@
 package tp.isilB.conferenceles.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
@@ -28,21 +28,28 @@ public class Utilisateur {
     private String prenom;
     @Column(name="infos",nullable=false,length = 256)
     private String infos;
+
+    //conferences
+    @OneToMany(cascade=CascadeType.ALL,mappedBy = "utilisateur")
+    @JsonManagedReference
+    private Set<Conference> conferences = new HashSet<>();
     //submissions
     @OneToMany(cascade=CascadeType.ALL,mappedBy = "utilisateur")
+    @JsonManagedReference
     private Set<Soumission> soumissions = new HashSet<>();
+    //evaluations
+    @OneToMany(cascade=CascadeType.ALL,mappedBy = "utilisateur")
+    @JsonManagedReference
+    private Set<Evaluation> evaluations = new HashSet<>();
+
     //roles
     @ElementCollection(targetClass = RoleType.class)
     @Enumerated(EnumType.STRING) // Store enums as strings in the database
     @CollectionTable(name = "utilisateur_roles", joinColumns = @JoinColumn(name = "utilisateur_id"))
     @Column(name = "role")
     private Set<RoleType> roles = new HashSet<>();
-    //evaluations
-    @OneToMany
-    private Set<Evaluation> evaluations = new HashSet<>();
-    //conferences
-    @OneToMany
-    private Set<Conference> conferences = new HashSet<>();
+
+
 
     public void setnom(String nom) {
         this.nom = nom;
