@@ -21,12 +21,10 @@ public class Soumission {
     private String nom;
     private String description;
 
-    @ManyToOne
-    @JsonBackReference // Prevents circular reference in JSON serialization
+    @ManyToOne // Prevents circular reference in JSON serialization
     private Utilisateur utilisateur;
 
-    @ManyToOne
-    @JsonBackReference // Prevents circular reference in JSON serialization
+    @ManyToOne // Prevents circular reference in JSON serialization
     private Conference conference;
 
     @OneToMany(mappedBy = "soumission", cascade = CascadeType.ALL)

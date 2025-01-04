@@ -14,12 +14,10 @@ public class Evaluation {
     private String commentaires;
     private String etat;
 
-    @ManyToOne
-    @JsonBackReference // Prevents circular reference in JSON serialization
+    @ManyToOne // Prevents circular reference in JSON serialization
     private Soumission soumission;
 
-    @ManyToOne
-    @JsonBackReference // Prevents circular reference in JSON serialization
+    @ManyToOne // Prevents circular reference in JSON serialization
     private Utilisateur utilisateur;
 
 

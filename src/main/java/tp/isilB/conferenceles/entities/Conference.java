@@ -1,8 +1,5 @@
 package tp.isilB.conferenceles.entities;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.Collection;
@@ -15,20 +12,15 @@ public class Conference {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-
     private String titre;
     private String dateDebut;
     private String dateFin;
     private String theme;
-    private String etat;
-
-    @ManyToOne
-    @JsonBackReference // Prevents circular reference in JSON serialization
-    private Utilisateur utilisateur;
-
+    private String etat;  // ouverte aux soummision, fermee, en evaluation etc..
     @OneToMany(mappedBy = "conference", cascade = CascadeType.ALL)
     private Set<Soumission> soumissions = new HashSet<>();
-
+    @ManyToOne
+    private Utilisateur utilisateur;
 
     public Conference() {}
     public Conference(String titre, String dateDebut, String dateFin, String theme, String etat) {
