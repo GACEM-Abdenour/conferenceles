@@ -20,7 +20,7 @@ public class ConferencelesApplication implements CommandLineRunner {
 	@Autowired
 	private UtilisateurRepository utilisateurRepository;
 	@Autowired
-	private SoumisionRepository soumissionRepository;
+	private SoumissionRepository soumissionRepository;
 	@Autowired
 	private ConferenceRepository conferenceRepository;
 	@Autowired
