@@ -17,20 +17,20 @@ public class Soumission {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+
     private String nom;
     private String description;
 
-    @OneToMany(mappedBy = "soumission", cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private Collection<Evaluation> evaluations = new HashSet<>();
-
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference // Prevents circular reference in JSON serialization
     private Utilisateur utilisateur;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference // Prevents circular reference in JSON serialization
     private Conference conference;
+
+    @OneToMany(mappedBy = "soumission", cascade = CascadeType.ALL)
+    private Collection<Evaluation> evaluations = new HashSet<>();
 
 
 

@@ -9,18 +9,18 @@ public class Evaluation {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    private int note; // 1-10
+
+    private int note;
     private String commentaires;
     private String etat;
 
     @ManyToOne
-    @JsonBackReference
-    private Utilisateur utilisateur;
-
-    @ManyToOne
-    @JsonBackReference
+    @JsonBackReference // Prevents circular reference in JSON serialization
     private Soumission soumission;
 
+    @ManyToOne
+    @JsonBackReference // Prevents circular reference in JSON serialization
+    private Utilisateur utilisateur;
 
 
     public Evaluation(int note, String commentaires, String etat,Soumission soumission) {

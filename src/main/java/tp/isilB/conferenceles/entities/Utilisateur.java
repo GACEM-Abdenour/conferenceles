@@ -19,37 +19,37 @@ public class Utilisateur {
     public Utilisateur() { }
 
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-
     private int id;
+
     private String nom;
     private String prenom;
-    @Column(name="infos",nullable=false,length = 256)
+
+    @Column(name = "infos", nullable = false, length = 256)
     private String infos;
 
-    //conferences
-    @OneToMany(cascade=CascadeType.ALL,mappedBy = "utilisateur")
-    @JsonManagedReference
+    // Conferences
+    @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL)
+    @JsonManagedReference // Manages the "parent" side of the relationship
     private Set<Conference> conferences = new HashSet<>();
-    //submissions
-    @OneToMany(cascade=CascadeType.ALL,mappedBy = "utilisateur")
-    @JsonManagedReference
+
+    // Submissions
+    @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL)
+    @JsonManagedReference // Manages the "parent" side of the relationship
     private Set<Soumission> soumissions = new HashSet<>();
-    //evaluations
-    @OneToMany(cascade=CascadeType.ALL,mappedBy = "utilisateur")
-    @JsonManagedReference
+
+    // Evaluations
+    @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL)
+    @JsonManagedReference // Manages the "parent" side of the relationship
     private Set<Evaluation> evaluations = new HashSet<>();
 
-    //roles
+    // Roles
     @ElementCollection(targetClass = RoleType.class)
-    @Enumerated(EnumType.STRING) // Store enums as strings in the database
+    @Enumerated(EnumType.STRING)
     @CollectionTable(name = "utilisateur_roles", joinColumns = @JoinColumn(name = "utilisateur_id"))
     @Column(name = "role")
     private Set<RoleType> roles = new HashSet<>();
-
-
 
     public void setnom(String nom) {
         this.nom = nom;

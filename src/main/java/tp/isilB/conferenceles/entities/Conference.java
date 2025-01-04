@@ -15,22 +15,19 @@ public class Conference {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+
     private String titre;
     private String dateDebut;
     private String dateFin;
     private String theme;
-    private String etat;  // ouverte aux soummision, fermee, en evaluation etc..
-
-
-    @OneToMany(mappedBy = "conference", cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private Set<Soumission> soumissions = new HashSet<>();
-
+    private String etat;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference // Prevents circular reference in JSON serialization
     private Utilisateur utilisateur;
 
+    @OneToMany(mappedBy = "conference", cascade = CascadeType.ALL)
+    private Set<Soumission> soumissions = new HashSet<>();
 
 
     public Conference() {}
