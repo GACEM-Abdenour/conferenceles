@@ -1,5 +1,7 @@
 package tp.isilB.conferenceles.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.Collection;
@@ -27,7 +29,8 @@ public class Utilisateur {
     @Column(name="infos",nullable=false,length = 256)
     private String infos;
     //submissions
-    @OneToMany(cascade=CascadeType.ALL,mappedBy = "utilisateur")
+    @JsonIgnore
+    @OneToMany(cascade=CascadeType.ALL)
     private Set<Soumission> soumissions = new HashSet<>();
     //roles
     @ElementCollection(targetClass = RoleType.class)
@@ -42,17 +45,22 @@ public class Utilisateur {
     @OneToMany
     private Set<Conference> conferences = new HashSet<>();
 
-    public void setNom(String nom) {
+    public int getId() { return id; }
+    public void setnom(String nom) {
         this.nom = nom;
     }
-    public void setPrenom(String prenom) { this.prenom = prenom; }
-    public void setInfos(String infos) { this.infos = infos; }
-    public String getNom() { return nom; }
-    public String getPrenom() { return prenom; }
-    public String getInfos() { return infos; }
-    public int getId() { return id; }
+    public void setprenom(String prenom) { this.prenom = prenom; }
+    public void setinfos(String infos) { this.infos = infos; }
+    public String getnom() { return nom; }
+    public String getprenom() { return prenom; }
+    public String getinfos() { return infos; }
     public Collection<Soumission> getSoumissions() { return soumissions; }
-    public void addSoumission(Soumission soumission) { this.soumissions.add(soumission); }
+    public void addSoumission(Soumission soumission,Conference conference) {
+        this.soumissions.add(soumission);
+        conference.getSoumissions().add(soumission);
+        soumission.setUtilisateur(this);
+        soumission.setConference(conference);
+    }
     public void addEvaluation(Evaluation evaluation) {
         this.evaluations.add(evaluation);
         evaluation.setUtilisateur(this);
@@ -93,7 +101,7 @@ public class Utilisateur {
         if ( this.hasRole(RoleType.AUTEUR) ) {
 
             Soumission soumission = new Soumission(nom,description,this);
-            this.addSoumission(soumission);
+            this.addSoumission(soumission,conference);
             return soumission;
         }
         else{
@@ -134,4 +142,6 @@ public class Utilisateur {
 
     public void updateEvaluation(Evaluation evaluation, String etat) {  evaluation.setEtat(etat); }
 
+
+    public Set<RoleType> getRoles() { return roles; }
 }

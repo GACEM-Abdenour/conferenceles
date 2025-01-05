@@ -3,12 +3,16 @@ package tp.isilB.conferenceles.entities;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "evaluations", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"utilisateur_id", "soumission_id"})
+})
 public class Evaluation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    private int note; // 1-10
+    private int note;
+    // 1-10
     private String commentaires;
     private String etat;
     @ManyToOne

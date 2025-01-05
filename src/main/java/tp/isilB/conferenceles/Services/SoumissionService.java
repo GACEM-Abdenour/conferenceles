@@ -26,8 +26,7 @@ public class SoumissionService {
         Conference conference = conferenceRepository.findById((long) conferenceId)
                 .orElseThrow(() -> new RuntimeException("Conference not found"));
         if (utilisateur.hasRole(RoleType.AUTEUR)) {
-            soumission.setUtilisateur(utilisateur);
-            soumission.setConference(conference);
+            utilisateur.addSoumission(soumission,conference);
             return soumissionRepository.save(soumission);
         } else {
             throw new RuntimeException("Only authors can create submissions.");

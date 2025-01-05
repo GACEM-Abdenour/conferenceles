@@ -1,5 +1,7 @@
 package tp.isilB.conferenceles.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.Collection;
@@ -17,7 +19,8 @@ public class Conference {
     private String dateFin;
     private String theme;
     private String etat;  // ouverte aux soummision, fermee, en evaluation etc..
-    @OneToMany(mappedBy = "conference", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<Soumission> soumissions = new HashSet<>();
     @ManyToOne
     private Utilisateur utilisateur;
@@ -45,7 +48,7 @@ public class Conference {
     public void setTheme(String theme) {this.theme = theme;}
     public void setEtat(String etat) {this.etat = etat;}
     public void setSoumissions(Set<Soumission> soumissions) { this.soumissions = soumissions;}
-    public Collection<Soumission> getSoumissions() {return soumissions;}
+    public Set<Soumission> getSoumissions() {return soumissions;}
 
     public void addSoumission(Soumission soumission) {
         this.soumissions.add(soumission);

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import tp.isilB.conferenceles.Services.SoumissionService;
 import tp.isilB.conferenceles.entities.*;
+import tp.isilB.conferenceles.repositories.SoumissionRepository;
 import java.util.List;
 
 @RestController
@@ -15,6 +16,9 @@ public class SoumissionController {
 
     @Autowired
     private SoumissionService soumissionService;
+    @Autowired
+    private SoumissionRepository soumissionRepository;
+
 
     @PostMapping("/{utilisateurId}/{conferenceId}")
     public ResponseEntity<Soumission> createSoumission(@PathVariable int utilisateurId, @PathVariable int conferenceId, @RequestBody Soumission soumission) {
@@ -22,11 +26,14 @@ public class SoumissionController {
         return new ResponseEntity<>(createdSoumission, HttpStatus.CREATED);
     }
 
+
     @GetMapping
     public ResponseEntity<List<Soumission>> getAllSoumissions() {
         List<Soumission> soumissions = soumissionService.getAllSoumissions();
         return new ResponseEntity<>(soumissions, HttpStatus.OK);
     }
+
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Soumission> getSoumissionById(@PathVariable int id) {

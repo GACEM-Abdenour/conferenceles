@@ -20,12 +20,13 @@ public class ConferenceService {
         Utilisateur utilisateur = utilisateurRepository.findById((long) utilisateurId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         if (utilisateur.hasRole(RoleType.EDITEUR)) {
-            conference.setUtilisateur(utilisateur);
+            utilisateur.addConference(conference);
             return conferenceRepository.save(conference);
         } else {
             throw new RuntimeException("Only editors can create conferences.");
         }
     }
+
 
     public List<Conference> getAllConferences() {
         return (List<Conference>) conferenceRepository.findAll();

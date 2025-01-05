@@ -1,7 +1,8 @@
 package tp.isilB.conferenceles.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -18,13 +19,18 @@ public class Soumission {
     private String nom;
     private String description;
 
+    @JsonIgnore
     @ManyToOne
     private Utilisateur utilisateur;
+
     @OneToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "details_id")
     private DetailsSoumission detailsSoumission;
+
     @OneToMany(mappedBy = "soumission", cascade = CascadeType.ALL)
     private Collection<Evaluation> evaluations = new HashSet<>();
+
+    @JsonIgnore
     @ManyToOne
     private Conference conference;
 
