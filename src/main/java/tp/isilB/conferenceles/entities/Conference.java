@@ -1,5 +1,5 @@
 package tp.isilB.conferenceles.entities;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 
 import java.util.Collection;

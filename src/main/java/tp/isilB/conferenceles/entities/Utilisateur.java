@@ -1,6 +1,5 @@
 package tp.isilB.conferenceles.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.util.Collection;
@@ -21,6 +20,7 @@ public class Utilisateur {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+
     private int id;
     private String nom;
     private String prenom;
@@ -36,42 +36,31 @@ public class Utilisateur {
     @Column(name = "role")
     private Set<RoleType> roles = new HashSet<>();
     //evaluations
-    @OneToMany(cascade=CascadeType.ALL,mappedBy = "utilisateur")
+    @OneToMany
     private Set<Evaluation> evaluations = new HashSet<>();
     //conferences
-    @OneToMany(cascade=CascadeType.ALL,mappedBy = "utilisateur")
+    @OneToMany
     private Set<Conference> conferences = new HashSet<>();
 
-    public void setnom(String nom) {
+    public void setNom(String nom) {
         this.nom = nom;
     }
-    public void setprenom(String prenom) { this.prenom = prenom; }
-    public void setinfos(String infos) { this.infos = infos; }
-    public String getnom() { return nom; }
-    public String getprenom() { return prenom; }
-    public String getinfos() { return infos; }
+    public void setPrenom(String prenom) { this.prenom = prenom; }
+    public void setInfos(String infos) { this.infos = infos; }
+    public String getNom() { return nom; }
+    public String getPrenom() { return prenom; }
+    public String getInfos() { return infos; }
     public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
     public Collection<Soumission> getSoumissions() { return soumissions; }
-    public void SetSoumissions(Set<Soumission> soumissions) { this.soumissions= soumissions;}
-    public Collection<Conference> getConferences() { return conferences; }
-    public void SetConferences(Set<Conference> conferences) { this.conferences= conferences; }
-
-    public Set<RoleType> getRoles() { return roles; }
-    public void SetRoles(Set<RoleType> roles) { this.roles= roles; }
+    public void addSoumission(Soumission soumission) { this.soumissions.add(soumission); }
     public void addEvaluation(Evaluation evaluation) {
         this.evaluations.add(evaluation);
         evaluation.setUtilisateur(this);
-    }
-    public void addESoumission(Soumission soumission) {
-        this.soumissions.add(soumission);
-        soumission.setUtilisateur(this);
     }
     public void addConference(Conference conference) {
         this.conferences.add(conference);
         conference.setUtilisateur(this);
     }
-
     public void addRole(RoleType role) {
         this.roles.add(role);
     }
@@ -82,5 +71,67 @@ public class Utilisateur {
         return this.roles.contains(role);
     }
 
+    // creer une conference
+    public Conference createConference(String titre, String dateDebut, String dateFin, String theme, String etat) {
+
+        if ( this.hasRole(RoleType.EDITEUR) ) {
+
+            Conference conference = new Conference(titre,dateDebut,dateFin,theme,etat);
+            this.addConference(conference);
+             return conference;
+        }
+        else{
+            throw new RuntimeException("Only editors can evaluate submissions.");
+        }
+
+    }
+
+
+    //creer une soumission
+    public Soumission createSubmission(String nom, String description, Utilisateur utilisateur,Conference conference) {
+
+        if ( this.hasRole(RoleType.AUTEUR) ) {
+
+            Soumission soumission = new Soumission(nom,description,this);
+            this.addSoumission(soumission);
+            return soumission;
+        }
+        else{
+            throw new RuntimeException("Only auteurs can create submissions.");
+        }
+
+    }
+
+    //evaluer une soumission
+    public Evaluation evaluateSubmission(Soumission soumission, int note, String commentaires, String etat) {
+
+        if ( this.hasRole(RoleType.EVALUATEUR ) ){
+            if ( !this.hasRole(RoleType.AUTEUR) || !this.getSoumissions().contains(soumission) ){
+            Evaluation evaluation = new Evaluation(note,commentaires,etat,soumission);
+            this.addEvaluation(evaluation);return evaluation;
+            }
+            else {
+                throw new RuntimeException("An author cannot evaluate his own submission.");
+            }
+        }
+        else{
+            throw new RuntimeException("Only evaluators can evaluate submissions.");
+        }
+
+    }
+
+
+    //modifier une soumission
+    public void modifySubmission(Soumission soumission, String nom,String description, Utilisateur utilisateur,Conference conference) {
+        if ( this.hasRole(RoleType.AUTEUR) && this.getSoumissions().contains(soumission)  ) {
+            soumission.setConference(conference);
+            soumission.setNom(nom);
+            soumission.setDescription(description);
+        }
+    }
+
+    public void updateConference(Conference conference, String etat) { conference.setEtat(etat); }
+
+    public void updateEvaluation(Evaluation evaluation, String etat) {  evaluation.setEtat(etat); }
 
 }

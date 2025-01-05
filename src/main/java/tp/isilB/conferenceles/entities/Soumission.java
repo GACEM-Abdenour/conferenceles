@@ -1,7 +1,5 @@
 package tp.isilB.conferenceles.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.Collection;
@@ -17,20 +15,18 @@ public class Soumission {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-
     private String nom;
     private String description;
 
-    @ManyToOne // Prevents circular reference in JSON serialization
+    @ManyToOne
     private Utilisateur utilisateur;
-
-    @ManyToOne // Prevents circular reference in JSON serialization
-    private Conference conference;
-
+    @OneToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name = "details_id")
+    private DetailsSoumission detailsSoumission;
     @OneToMany(mappedBy = "soumission", cascade = CascadeType.ALL)
     private Collection<Evaluation> evaluations = new HashSet<>();
-
-
+    @ManyToOne
+    private Conference conference;
 
 
     public Soumission(String nom, String description, Utilisateur utilisateur) {
@@ -76,6 +72,7 @@ public class Soumission {
     }
     public Conference getConference() { return conference; }
 
-
-
+    public void setDetailsSoumission(DetailsSoumission detailsSoumission) {
+        this.detailsSoumission = detailsSoumission;
+    }
 }

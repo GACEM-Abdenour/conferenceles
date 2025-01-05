@@ -1,6 +1,5 @@
 package tp.isilB.conferenceles.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -9,17 +8,13 @@ public class Evaluation {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-
-    private int note;
+    private int note; // 1-10
     private String commentaires;
     private String etat;
-
-    @ManyToOne // Prevents circular reference in JSON serialization
+    @ManyToOne
     private Soumission soumission;
-
-    @ManyToOne // Prevents circular reference in JSON serialization
+    @ManyToOne
     private Utilisateur utilisateur;
-
 
     public Evaluation(int note, String commentaires, String etat,Soumission soumission) {
         this.note = note;
@@ -27,6 +22,7 @@ public class Evaluation {
         this.etat = etat;
         this.soumission = soumission;
     }
+
     public Evaluation() {}
 
     public void setNote(int note) { this.note = note; }
