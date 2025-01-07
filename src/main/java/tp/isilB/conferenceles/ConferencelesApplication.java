@@ -30,19 +30,19 @@ public class ConferencelesApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 
 
-//		Utilisateur auteur1 = new Utilisateur("etudiant1", "nomEtd1", "ysthb" );
-//		Utilisateur auteur2 = new Utilisateur("etudiant2", "nomEtd2", "ESI" );
-//		Utilisateur auteur3 = new Utilisateur("etudiant3", "nomEtd3", "Alger" );
-//
-//		auteur1.addRole(RoleType.AUTEUR);
-//		auteur1.addRole(RoleType.EVALUATEUR);
-//		auteur1.addRole(RoleType.EDITEUR);
-//		auteur2.addRole(RoleType.AUTEUR);
-//		auteur3.addRole(RoleType.EVALUATEUR);
-//
-//		utilisateurRepository.save(auteur1);
-//		utilisateurRepository.save(auteur2);
-//		utilisateurRepository.save(auteur3);
+		Utilisateur auteur1 = new Utilisateur("etudiant1", "nomEtd1", "ysthb" );
+		Utilisateur auteur2 = new Utilisateur("etudiant2", "nomEtd2", "ESI" );
+		Utilisateur auteur3 = new Utilisateur("etudiant3", "nomEtd3", "Alger" );
+
+		auteur1.addRole(RoleType.AUTEUR);
+		auteur1.addRole(RoleType.EVALUATEUR);
+		auteur1.addRole(RoleType.EDITEUR);
+		auteur2.addRole(RoleType.AUTEUR);
+		auteur3.addRole(RoleType.EVALUATEUR);
+
+		utilisateurRepository.save(auteur1);
+		utilisateurRepository.save(auteur2);
+		utilisateurRepository.save(auteur3);
 
 	}
 }

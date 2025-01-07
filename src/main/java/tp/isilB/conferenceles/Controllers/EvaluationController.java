@@ -5,8 +5,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import tp.isilB.conferenceles.Services.EvaluationService;
+import tp.isilB.conferenceles.Services.SoumissionService;
+import tp.isilB.conferenceles.dto.EvaluationDTO;
+import tp.isilB.conferenceles.dto.EvaluationResponseDTO;
 import tp.isilB.conferenceles.entities.Evaluation;
+import tp.isilB.conferenceles.entities.RoleType;
+import tp.isilB.conferenceles.entities.Soumission;
+import tp.isilB.conferenceles.entities.Utilisateur;
 import tp.isilB.conferenceles.repositories.EvaluationRepository;
+import tp.isilB.conferenceles.repositories.UtilisateurRepository;
+
+import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/evaluations")
@@ -14,6 +24,10 @@ public class EvaluationController {
 
     @Autowired
     private EvaluationService evaluationService;
+
+    @Autowired
+    private UtilisateurRepository utilisateurRepository;
+
 
     @Autowired
     private EvaluationRepository evaluationRepository;
@@ -30,17 +44,24 @@ public class EvaluationController {
         }
 
         if (evaluationRepository.existsByUtilisateurIdAndSoumissionId(utilisateurId, soumissionId)) {
-            return ResponseEntity.badRequest().body("This evaluateur has already evaluated the soumission.");
+            return ResponseEntity.badRequest().body("This evaluator has already evaluated the submission.");
         }
 
-
-        Evaluation createdEvaluation = evaluationService.evaluateSoumission(
+        EvaluationResponseDTO evaluationResponse = evaluationService.evaluateSoumission(
                 utilisateurId,
                 soumissionId,
                 evaluation.getNote(),
                 evaluation.getCommentaires(),
                 evaluation.getEtat()
         );
-        return new ResponseEntity<>(createdEvaluation, HttpStatus.CREATED);
+        return new ResponseEntity<>(evaluationResponse, HttpStatus.CREATED);
     }
+
+    @GetMapping
+    public ResponseEntity<List<EvaluationResponseDTO>> getAllEvaluations() {
+        List<EvaluationResponseDTO> evaluations = evaluationService.getAllEvaluations();
+        return new ResponseEntity<>(evaluations, HttpStatus.OK);
+    }
+
+
 }

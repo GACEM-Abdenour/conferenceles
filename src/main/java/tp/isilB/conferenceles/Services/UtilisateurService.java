@@ -29,4 +29,8 @@ public class UtilisateurService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return utilisateur.getRoles();
     }
+
+    public List<Utilisateur> getAllUtilisateurs() {
+        return (List<Utilisateur>) utilisateurRepository.findAll();
+    }
 }

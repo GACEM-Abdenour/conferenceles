@@ -55,4 +55,12 @@ public class Conference {
         soumission.setConference(this);
     }
     public void removeSoumission(Soumission soumission) { this.soumissions.remove(soumission); }
+
+    public Set<Integer> getSoumissionsIds(Set<Soumission> soumissions){
+        Set<Integer> ids = new HashSet<>();
+        for( Soumission soumission : soumissions) {
+            ids.add(soumission.getId() );
+        }
+        return ids;
+    }
 }

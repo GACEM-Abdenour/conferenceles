@@ -2,8 +2,11 @@ package tp.isilB.conferenceles.Services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tp.isilB.conferenceles.repositories.*;
-import tp.isilB.conferenceles.entities.*;
+import tp.isilB.conferenceles.repositories.ConferenceRepository;
+import tp.isilB.conferenceles.repositories.UtilisateurRepository;
+import tp.isilB.conferenceles.entities.Conference;
+import tp.isilB.conferenceles.entities.RoleType;
+import tp.isilB.conferenceles.entities.Utilisateur;
 
 import java.util.List;
 
@@ -26,7 +29,6 @@ public class ConferenceService {
             throw new RuntimeException("Only editors can create conferences.");
         }
     }
-
 
     public List<Conference> getAllConferences() {
         return (List<Conference>) conferenceRepository.findAll();

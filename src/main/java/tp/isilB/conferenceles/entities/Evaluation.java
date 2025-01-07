@@ -12,7 +12,6 @@ public class Evaluation {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private int note;
-    // 1-10
     private String commentaires;
     private String etat;
     @ManyToOne
@@ -20,7 +19,7 @@ public class Evaluation {
     @ManyToOne
     private Utilisateur utilisateur;
 
-    public Evaluation(int note, String commentaires, String etat,Soumission soumission) {
+    public Evaluation(int note, String commentaires, String etat, Soumission soumission) {
         this.note = note;
         this.commentaires = commentaires;
         this.etat = etat;
@@ -40,6 +39,4 @@ public class Evaluation {
     public String getEtat() { return etat; }
     public Soumission getSoumission() { return soumission; }
     public Utilisateur getUtilisateur() { return utilisateur; }
-
-
 }

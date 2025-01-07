@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tp.isilB.conferenceles.entities.Conference;
 import tp.isilB.conferenceles.entities.RoleType;
+import tp.isilB.conferenceles.entities.Soumission;
 import tp.isilB.conferenceles.entities.Utilisateur;
 import tp.isilB.conferenceles.Services.UtilisateurService;
 
@@ -36,4 +38,9 @@ public class UtilisateurController {
         return new ResponseEntity<>(roles, HttpStatus.OK);
     }
 
+    @GetMapping
+    public ResponseEntity<List<Utilisateur>> getAllUtilisateurs() {
+        List<Utilisateur> utilisateurs = utilisateurService.getAllUtilisateurs();
+        return new ResponseEntity<>(utilisateurs, HttpStatus.OK);
+    }
 }

@@ -1,7 +1,5 @@
 package tp.isilB.conferenceles.dto;
 
-import tp.isilB.conferenceles.entities.Soumission;
-
 import java.util.Set;
 
 public class ConferenceDTO {
@@ -11,17 +9,17 @@ public class ConferenceDTO {
     private String dateFin;
     private String theme;
     private String etat;
-    private Set<Soumission> soumissions;
+    private Set<Integer> soumissionIds; // Change to Set<Integer>
     private UtilisateurDTO utilisateur;
 
-    public ConferenceDTO(int id, String titre, String dateDebut, String dateFin, String theme, String etat, Set<Soumission> soumissions, UtilisateurDTO utilisateur) {
+    public ConferenceDTO(int id, String titre, String dateDebut, String dateFin, String theme, String etat, Set<Integer> soumissionIds, UtilisateurDTO utilisateur) {
         this.id = id;
         this.titre = titre;
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
         this.theme = theme;
         this.etat = etat;
-        this.soumissions = soumissions;
+        this.soumissionIds = soumissionIds; // Updated to Set<Integer>
         this.utilisateur = utilisateur;
     }
 
@@ -74,12 +72,12 @@ public class ConferenceDTO {
         this.etat = etat;
     }
 
-    public Set<Soumission> getSoumissions() {
-        return soumissions;
+    public Set<Integer> getSoumissionIds() { // Updated to Set<Integer>
+        return soumissionIds;
     }
 
-    public void setSoumissions(Set<Soumission> soumissions) {
-        this.soumissions = soumissions;
+    public void setSoumissionIds(Set<Integer> soumissionIds) { // Updated to Set<Integer>
+        this.soumissionIds = soumissionIds;
     }
 
     public UtilisateurDTO getUtilisateur() {

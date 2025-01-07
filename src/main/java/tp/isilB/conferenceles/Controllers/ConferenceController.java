@@ -3,15 +3,16 @@ package tp.isilB.conferenceles.Controllers;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import tp.isilB.conferenceles.Services.ConferenceService;
 import tp.isilB.conferenceles.dto.ConferenceDTO;
 import tp.isilB.conferenceles.dto.UtilisateurDTO;
-import tp.isilB.conferenceles.entities.*;
+import tp.isilB.conferenceles.entities.Conference;
 import tp.isilB.conferenceles.repositories.ConferenceRepository;
+import tp.isilB.conferenceles.entities.Soumission;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -28,18 +29,17 @@ public class ConferenceController {
         Conference createdConference = conferenceService.createConference(utilisateurId, conference);
         return new ResponseEntity<>(createdConference, HttpStatus.CREATED);
     }
-    /*
-    @GetMapping
-    public ResponseEntity<List<Conference>> getAllConferences() {
-        List<Conference> conferences = conferenceService.getAllConferences();
-        return new ResponseEntity<>(conferences, HttpStatus.OK);
-    }
-     */
 
     @GetMapping
     public List<ConferenceDTO> getAllConferences() {
         return conferenceRepository.findAll().stream().map(conference -> {
             UtilisateurDTO utilisateurDTO = new UtilisateurDTO(conference.getUtilisateur().getId());
+
+
+            Set<Integer> soumissionIds = conference.getSoumissions().stream()
+                    .map(Soumission::getId)
+                    .collect(Collectors.toSet());
+
             return new ConferenceDTO(
                     conference.getId(),
                     conference.getTitre(),
@@ -47,8 +47,8 @@ public class ConferenceController {
                     conference.getDateFin(),
                     conference.getTheme(),
                     conference.getEtat(),
-                    conference.getSoumissions(),
-                    utilisateurDTO
+                    soumissionIds, // List of submission IDs
+                    utilisateurDTO // Single UtilisateurDTO object
             );
         }).collect(Collectors.toList());
     }

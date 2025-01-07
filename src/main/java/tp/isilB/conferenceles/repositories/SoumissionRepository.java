@@ -9,5 +9,5 @@ import tp.isilB.conferenceles.entities.Soumission;
 
 import java.util.List;
 
-public interface SoumissionRepository extends CrudRepository<Soumission, Long> {
+public interface SoumissionRepository extends JpaRepository<Soumission, Long> {
 }
