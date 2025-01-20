@@ -58,4 +58,23 @@ public class ConferenceController {
         Conference conference = conferenceService.getConferenceById(id);
         return new ResponseEntity<>(conference, HttpStatus.OK);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Conference> updateConference(@PathVariable int id, @RequestBody Conference conferenceDetails) {
+        Conference updatedConference = conferenceService.updateConference(id, conferenceDetails);
+        return new ResponseEntity<>(updatedConference, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteConference(@PathVariable int id) {
+        conferenceService.deleteConference(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteAllConferences() {
+        conferenceService.deleteAllConference();
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 }

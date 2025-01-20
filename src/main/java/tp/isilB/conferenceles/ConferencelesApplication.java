@@ -38,6 +38,7 @@ public class ConferencelesApplication implements CommandLineRunner {
 		auteur1.addRole(RoleType.EVALUATEUR);
 		auteur1.addRole(RoleType.EDITEUR);
 		auteur2.addRole(RoleType.AUTEUR);
+		auteur2.addRole(RoleType.EVALUATEUR);
 		auteur3.addRole(RoleType.EVALUATEUR);
 
 		utilisateurRepository.save(auteur1);

@@ -38,4 +38,28 @@ public class ConferenceService {
         return conferenceRepository.findById((long) id)
                 .orElseThrow(() -> new RuntimeException("Conference not found"));
     }
+
+    public Conference updateConference(int id, Conference conferenceDetails) {
+        Conference conference = conferenceRepository.findById((long) id)
+                .orElseThrow(() -> new RuntimeException("Conference not found"));
+
+        conference.setTitre(conferenceDetails.getTitre());
+        conference.setDateDebut(conferenceDetails.getDateDebut());
+        conference.setDateFin(conferenceDetails.getDateFin());
+        conference.setTheme(conferenceDetails.getTheme());
+        conference.setEtat(conferenceDetails.getEtat());
+
+        return conferenceRepository.save(conference);
+    }
+
+    public void deleteConference(int id) {
+        Conference conference = conferenceRepository.findById(Long.valueOf(id))
+                .orElseThrow(() -> new RuntimeException("Conference not found"));
+
+        conferenceRepository.delete(conference);
+    }
+
+    public void deleteAllConference() {
+        conferenceRepository.deleteAll();
+    }
 }

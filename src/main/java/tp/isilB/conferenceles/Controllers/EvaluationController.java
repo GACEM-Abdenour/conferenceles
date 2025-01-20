@@ -28,7 +28,6 @@ public class EvaluationController {
     @Autowired
     private UtilisateurRepository utilisateurRepository;
 
-
     @Autowired
     private EvaluationRepository evaluationRepository;
 
@@ -61,6 +60,30 @@ public class EvaluationController {
     public ResponseEntity<List<EvaluationResponseDTO>> getAllEvaluations() {
         List<EvaluationResponseDTO> evaluations = evaluationService.getAllEvaluations();
         return new ResponseEntity<>(evaluations, HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}/{utilisateurId}")
+    public ResponseEntity<?> updateEvaluation(
+            @PathVariable int id,
+            @PathVariable int utilisateurId,
+            @RequestBody Evaluation evaluationDetails) {
+
+
+            if (evaluationDetails.getNote() < 0 || evaluationDetails.getNote() > 10) {
+                return ResponseEntity.badRequest().body("Note must be between 0 and 10");
+            }
+
+            EvaluationResponseDTO updatedEvaluation = evaluationService.updateEvaluation(id, evaluationDetails, utilisateurId);
+            return new ResponseEntity<>(updatedEvaluation, HttpStatus.OK);
+
+
+
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteEvaluation(@PathVariable int id) {
+        evaluationService.deleteEvaluation(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 

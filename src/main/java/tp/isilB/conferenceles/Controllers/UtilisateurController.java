@@ -43,4 +43,23 @@ public class UtilisateurController {
         List<Utilisateur> utilisateurs = utilisateurService.getAllUtilisateurs();
         return new ResponseEntity<>(utilisateurs, HttpStatus.OK);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Utilisateur> updateUtilisateur(@PathVariable int id, @RequestBody Utilisateur utilisateurDetails) {
+        Utilisateur updatedUtilisateur = utilisateurService.updateUtilisateur(id, utilisateurDetails);
+        return new ResponseEntity<>(updatedUtilisateur, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUtilisateur(@PathVariable int id) {
+        utilisateurService.deleteUtilisateur(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteAllUtilisateurs() {
+        utilisateurService.deleteAllUtilisateurs();
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 }

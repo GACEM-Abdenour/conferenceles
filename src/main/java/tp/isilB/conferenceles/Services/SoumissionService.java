@@ -3,6 +3,7 @@ package tp.isilB.conferenceles.Services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tp.isilB.conferenceles.dto.EvaluationForSoumissionDTO;
+import tp.isilB.conferenceles.dto.SoumissionDTO;
 import tp.isilB.conferenceles.dto.SoumissionWithDetailsDTO;
 import tp.isilB.conferenceles.repositories.ConferenceRepository;
 import tp.isilB.conferenceles.repositories.SoumissionRepository;
@@ -66,4 +67,33 @@ public class SoumissionService {
                 ))
                 .collect(Collectors.toList());
     }
+
+    public SoumissionDTO updateSoumission(int id, Soumission soumissionDetails) {
+        Soumission soumission = soumissionRepository.findById((long) id)
+                .orElseThrow(() -> new RuntimeException("Submission not found"));
+
+        // Update the submission details
+        soumission.setNom(soumissionDetails.getNom());
+        soumission.setDescription(soumissionDetails.getDescription());
+
+        // Save the updated submission
+        Soumission updatedSoumission = soumissionRepository.save(soumission);
+
+        // Map the updated submission to SoumissionDTO
+        return new SoumissionDTO(
+                updatedSoumission.getId(),
+                updatedSoumission.getNom(),
+                updatedSoumission.getDescription(),
+                updatedSoumission.getUtilisateur().getId(),
+                updatedSoumission.getConference().getId()
+        );
+    }
+
+    public void deleteSoumission(int id) {
+        Soumission soumission = soumissionRepository.findById((long) id)
+                .orElseThrow(() -> new RuntimeException("Submission not found"));
+
+        soumissionRepository.delete(soumission);
+    }
+
 }

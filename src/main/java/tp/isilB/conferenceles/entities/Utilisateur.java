@@ -68,4 +68,9 @@ public class Utilisateur {
     public void restorRoles() { roles.removeAll(roles); }
     public boolean hasRole(RoleType role) { return this.roles.contains(role); }
     public Set<RoleType> getRoles() { return roles; }
+
+    public void setRoles(Set<RoleType> roles) {
+        this.roles.clear();
+        this.roles = roles;
+    }
 }

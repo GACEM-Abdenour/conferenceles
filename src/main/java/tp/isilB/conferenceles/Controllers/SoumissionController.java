@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import tp.isilB.conferenceles.Services.SoumissionService;
+import tp.isilB.conferenceles.dto.SoumissionDTO;
 import tp.isilB.conferenceles.dto.SoumissionWithDetailsDTO;
 import tp.isilB.conferenceles.entities.Soumission;
 import tp.isilB.conferenceles.repositories.SoumissionRepository;
@@ -37,4 +38,20 @@ public class SoumissionController {
         Soumission soumission = soumissionService.getSoumissionById(id);
         return new ResponseEntity<>(soumission, HttpStatus.OK);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<SoumissionDTO> updateSoumission(
+            @PathVariable int id,
+            @RequestBody Soumission soumissionDetails) {
+
+        SoumissionDTO updatedSoumission = soumissionService.updateSoumission(id, soumissionDetails);
+        return new ResponseEntity<>(updatedSoumission, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteSoumission(@PathVariable int id) {
+        soumissionService.deleteSoumission(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 }
