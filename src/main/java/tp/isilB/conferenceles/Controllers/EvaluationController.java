@@ -86,5 +86,12 @@ public class EvaluationController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @DeleteMapping
+    public ResponseEntity<Void> deleteAllEvaluations() {
+        evaluationService.deleteAllEvaluations();
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+
 
 }

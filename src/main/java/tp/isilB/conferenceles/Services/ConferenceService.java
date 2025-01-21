@@ -2,11 +2,11 @@ package tp.isilB.conferenceles.Services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tp.isilB.conferenceles.entities.*;
 import tp.isilB.conferenceles.repositories.ConferenceRepository;
+import tp.isilB.conferenceles.repositories.EvaluationRepository;
+import tp.isilB.conferenceles.repositories.SoumissionRepository;
 import tp.isilB.conferenceles.repositories.UtilisateurRepository;
-import tp.isilB.conferenceles.entities.Conference;
-import tp.isilB.conferenceles.entities.RoleType;
-import tp.isilB.conferenceles.entities.Utilisateur;
 
 import java.util.List;
 
@@ -14,10 +14,16 @@ import java.util.List;
 public class ConferenceService {
 
     @Autowired
+    private UtilisateurRepository utilisateurRepository;
+
+    @Autowired
     private ConferenceRepository conferenceRepository;
 
     @Autowired
-    private UtilisateurRepository utilisateurRepository;
+    private SoumissionRepository soumissionRepository;
+
+    @Autowired
+    private EvaluationRepository evaluationRepository;
 
     public Conference createConference(int utilisateurId, Conference conference) {
         Utilisateur utilisateur = utilisateurRepository.findById((long) utilisateurId)
@@ -55,6 +61,11 @@ public class ConferenceService {
     public void deleteConference(int id) {
         Conference conference = conferenceRepository.findById(Long.valueOf(id))
                 .orElseThrow(() -> new RuntimeException("Conference not found"));
+
+        for (Soumission soumission : conference.getSoumissions()) {
+            soumission.setUtilisateur(null);
+            soumissionRepository.save(soumission);
+        }
 
         conferenceRepository.delete(conference);
     }

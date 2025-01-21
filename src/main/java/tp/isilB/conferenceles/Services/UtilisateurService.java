@@ -2,8 +2,10 @@ package tp.isilB.conferenceles.Services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tp.isilB.conferenceles.entities.RoleType;
-import tp.isilB.conferenceles.entities.Utilisateur;
+import tp.isilB.conferenceles.entities.*;
+import tp.isilB.conferenceles.repositories.ConferenceRepository;
+import tp.isilB.conferenceles.repositories.EvaluationRepository;
+import tp.isilB.conferenceles.repositories.SoumissionRepository;
 import tp.isilB.conferenceles.repositories.UtilisateurRepository;
 
 import java.util.List;
@@ -14,6 +16,16 @@ public class UtilisateurService {
 
     @Autowired
     private UtilisateurRepository utilisateurRepository;
+
+    @Autowired
+    private ConferenceRepository conferenceRepository;
+
+    @Autowired
+    private SoumissionRepository soumissionRepository;
+
+    @Autowired
+    private EvaluationRepository evaluationRepository;
+
 
     public Utilisateur createUtilisateur(Utilisateur utilisateur) {
         return utilisateurRepository.save(utilisateur);
@@ -46,12 +58,28 @@ public class UtilisateurService {
         return utilisateurRepository.save(utilisateur);
     }
 
-    public void deleteUtilisateur(int id) {
-        Utilisateur utilisateur = utilisateurRepository.findById(Long.valueOf(id))
+    public void deleteUtilisateur(Long id) {
+        Utilisateur utilisateur = utilisateurRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+
+        for (Evaluation evaluation : utilisateur.getEvaluations()) {
+            evaluation.setUtilisateur(null);
+            evaluationRepository.save(evaluation);
+        }
+
+        for (Soumission soumission : utilisateur.getSoumissions()) {
+            soumission.setUtilisateur(null);
+            soumissionRepository.save(soumission);
+        }
+
+        for (Conference conference : utilisateur.getConferences()) {
+            conference.setUtilisateur(null);
+            conferenceRepository.save(conference);
+        }
 
         utilisateurRepository.delete(utilisateur);
     }
+
 
     public void deleteAllUtilisateurs() {
         utilisateurRepository.deleteAll();

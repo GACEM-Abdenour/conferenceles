@@ -20,7 +20,7 @@ public class Soumission {
     @ManyToOne
     private Utilisateur utilisateur;
 
-    @OneToMany(mappedBy = "soumission", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "soumission", cascade = CascadeType.REMOVE)
     private Collection<Evaluation> evaluations = new HashSet<>();
 
     @JsonIgnore

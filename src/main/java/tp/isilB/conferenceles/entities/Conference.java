@@ -19,7 +19,7 @@ public class Conference {
     private String dateFin;
     private String theme;
     private String etat;  // ouverte aux soummision, fermee, en evaluation etc..
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.REMOVE)
     @JsonIgnore
     private Set<Soumission> soumissions = new HashSet<>();
     @ManyToOne
@@ -49,6 +49,7 @@ public class Conference {
     public void setEtat(String etat) {this.etat = etat;}
     public void setSoumissions(Set<Soumission> soumissions) { this.soumissions = soumissions;}
     public Set<Soumission> getSoumissions() {return soumissions;}
+
 
     public void addSoumission(Soumission soumission) {
         this.soumissions.add(soumission);

@@ -5,13 +5,11 @@ import org.springframework.stereotype.Service;
 import tp.isilB.conferenceles.dto.EvaluationForSoumissionDTO;
 import tp.isilB.conferenceles.dto.SoumissionDTO;
 import tp.isilB.conferenceles.dto.SoumissionWithDetailsDTO;
+import tp.isilB.conferenceles.entities.*;
 import tp.isilB.conferenceles.repositories.ConferenceRepository;
+import tp.isilB.conferenceles.repositories.EvaluationRepository;
 import tp.isilB.conferenceles.repositories.SoumissionRepository;
 import tp.isilB.conferenceles.repositories.UtilisateurRepository;
-import tp.isilB.conferenceles.entities.RoleType;
-import tp.isilB.conferenceles.entities.Soumission;
-import tp.isilB.conferenceles.entities.Utilisateur;
-import tp.isilB.conferenceles.entities.Conference;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,13 +18,18 @@ import java.util.stream.Collectors;
 public class SoumissionService {
 
     @Autowired
-    private SoumissionRepository soumissionRepository;
-
-    @Autowired
     private UtilisateurRepository utilisateurRepository;
 
     @Autowired
     private ConferenceRepository conferenceRepository;
+
+    @Autowired
+    private SoumissionRepository soumissionRepository;
+
+    @Autowired
+    private EvaluationRepository evaluationRepository;
+    @Autowired
+    private EvaluationService evaluationService;
 
     public Soumission createSoumission(int utilisateurId, int conferenceId, Soumission soumission) {
         Utilisateur utilisateur = utilisateurRepository.findById((long) utilisateurId)
@@ -72,14 +75,14 @@ public class SoumissionService {
         Soumission soumission = soumissionRepository.findById((long) id)
                 .orElseThrow(() -> new RuntimeException("Submission not found"));
 
-        // Update the submission details
+        
         soumission.setNom(soumissionDetails.getNom());
         soumission.setDescription(soumissionDetails.getDescription());
 
-        // Save the updated submission
+
         Soumission updatedSoumission = soumissionRepository.save(soumission);
 
-        // Map the updated submission to SoumissionDTO
+
         return new SoumissionDTO(
                 updatedSoumission.getId(),
                 updatedSoumission.getNom(),
@@ -92,6 +95,18 @@ public class SoumissionService {
     public void deleteSoumission(int id) {
         Soumission soumission = soumissionRepository.findById((long) id)
                 .orElseThrow(() -> new RuntimeException("Submission not found"));
+
+            EvaluationService evaluationService1 = new EvaluationService();
+            evaluationService1.deleteAllEvaluations();
+
+
+            soumission.setConference(null);
+            conferenceRepository.save(soumission.getConference());
+
+        soumission.setUtilisateur(null);
+        soumissionRepository.save(soumission);
+
+
 
         soumissionRepository.delete(soumission);
     }

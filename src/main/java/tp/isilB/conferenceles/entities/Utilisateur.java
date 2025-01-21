@@ -19,7 +19,7 @@ public class Utilisateur {
     private String infos;
 
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<Soumission> soumissions = new HashSet<>();
 
     @ElementCollection(targetClass = RoleType.class)
@@ -28,10 +28,12 @@ public class Utilisateur {
     @Column(name = "role")
     private Set<RoleType> roles = new HashSet<>();
 
-    @OneToMany
+    @JsonIgnore
+    @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<Evaluation> evaluations = new HashSet<>();
 
-    @OneToMany
+    @JsonIgnore
+    @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<Conference> conferences = new HashSet<>();
 
     public Utilisateur(String nom, String prenom, String infos) {
@@ -50,6 +52,11 @@ public class Utilisateur {
     public String getprenom() { return prenom; }
     public String getinfos() { return infos; }
     public Collection<Soumission> getSoumissions() { return soumissions; }
+    public void setConferences( Set<Conference> conferences) { this.conferences = conferences; }
+    public Set<Conference> getConferences() { return conferences; }
+    public void setEvaluations( Set<Evaluation> evaluations) { this.evaluations = evaluations; }
+    public Set<Evaluation> getEvaluations() { return evaluations; }
+
     public void addSoumission(Soumission soumission, Conference conference) {
         this.soumissions.add(soumission);
         conference.getSoumissions().add(soumission);

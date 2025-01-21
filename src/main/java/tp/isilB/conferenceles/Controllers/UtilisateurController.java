@@ -52,7 +52,7 @@ public class UtilisateurController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUtilisateur(@PathVariable int id) {
-        utilisateurService.deleteUtilisateur(id);
+        utilisateurService.deleteUtilisateur((long) id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

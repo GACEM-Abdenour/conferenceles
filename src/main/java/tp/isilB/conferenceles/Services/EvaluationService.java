@@ -106,4 +106,8 @@ public class EvaluationService {
         evaluationRepository.delete(evaluation);
     }
 
+    public void deleteAllEvaluations() {
+        evaluationRepository.deleteAll();
+    }
+
 }
